@@ -23,7 +23,7 @@ export default {
             <span class="fa fa-arrow-circle-right"></span> View Resume
           </a>
         </div>
-        <div class="col-md-5 model-img">
+        <div class="col-md-5 model-img text-center">
           <img src="../assets/images/avatar-3.jpg">
         </div>
       </div>
