@@ -1,30 +1,27 @@
 <template>
     <nav class="navbar">
         <div class="container">
-            <div class="row">
-                <div class="col-xl-6 col-lg-6 text-left text-lg-left">
-                    <a href="#" class="logo">COMMON</a>
-                </div>
-                <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
-                    <input type="checkbox" id="toggler" />
-                    <label for="toggler"><i class="ri-menu-line"></i></label>
-                    <div class="menu">
-                        <ul class="list">
-                            <li>
-                                <RouterLink to="/">Home</RouterLink>
-                            </li>
-                            <li>
-                                <RouterLink to="/about">About</RouterLink>
-                            </li>
-                            <li>
-                                <RouterLink to="/quote">Quote</RouterLink>
-                            </li>
-                            <li>
-                                <RouterLink to="/word-counter">Word Counter</RouterLink>
-                            </li>
+            <a class="logo" href="#"><img src="../assets/logo.svg" alt=""></a>
+            <div class="pull-right">
+                <input type="checkbox" id="toggler" />
+                <label for="toggler" class="toggleBtnLabel"><i class="navbar-toggler-icon"></i></label>
 
-                        </ul>
-                    </div>
+                <div class="menu">
+                    <ul class="list">
+                        <li>
+                            <RouterLink to="/">Home</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/about">About</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/quote">Quote</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/word-counter">Word Counter</RouterLink>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
         </div>
@@ -48,9 +45,8 @@ ul {
     width: 100%;
     position: relative;
     background: #202020;
-    padding: 25px 0;
+    margin : 0;
 }
-
 .navbar li {
     display: inline-block;
     margin-left: 20px;
@@ -64,10 +60,36 @@ ul {
     font-size: 14px;
     color: #878787;
 }
-
 .logo {
     margin-right: 10px;
 }
+
+.logo img {
+    width: 50px;
+    padding: 15px 0;
+}
+.menu {
+    padding: 20px 0;
+}
+.toggleBtnLabel{
+    padding-top : 20px;
+    position: fixed;
+    right: 10vh;
+}
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  content: "";
+  background: no-repeat center center;
+  background-size: 100% 100%;
+  position: relative;
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 
 #toggler,
 .navbar label {

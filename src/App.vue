@@ -18,7 +18,7 @@ import Foot from './components/Footer.vue';
 
 <style>
 .MainContent{
-  min-height: 78vh;
+  min-height: 83vh;
 }
 </style>
 

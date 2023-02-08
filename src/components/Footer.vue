@@ -1,35 +1,30 @@
 <template>
     <footer class="footer-section">
-        <div class="copyright-area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 text-left text-lg-left">
-                        <div class="copyright-text">
-                            <p>Copyright &copy; 2023, All Right Reserved <a
-                                    href="http://kamankhadka.com.np">CommonWorld</a></p>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
-                        <div class="footer-menu">
-                            <ul>
-                                <li>
-                                    <RouterLink to="/">Home</RouterLink>
-                                </li>
-                                <li>
-                                    <RouterLink to="#">Terms</RouterLink>
-                                </li>
-                                <li>
-                                    <RouterLink to="#">Privacy</RouterLink>
-                                </li>
-                                <li>
-                                    <RouterLink to="#">Policy</RouterLink>
-                                </li>
-                                <li>
-                                    <RouterLink to="#">Contact</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+        <div class="container">
+
+            <div class="copyright-text pull-left">
+                <p>Copyright &copy; 2023, All Right Reserved <a href="http://kamankhadka.com.np">CommonWorld</a></p>
+            </div>
+
+            <div class="pull-right">
+                <div class="footer-menu">
+                    <ul>
+                        <li>
+                            <RouterLink to="/">Home</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="#">Terms</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="#">Privacy</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="#">Policy</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="#">Contact</RouterLink>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -44,21 +39,19 @@ ul {
 }
 
 .footer-section {
-    background: #151414;
+    background: #202020;
     width: 100%;
     bottom: 0;
     position: relative;
 }
 
-.copyright-area {
-    background: #202020;
-    padding: 25px 0;
-}
 
 .copyright-text p {
     margin: 0;
     font-size: 14px;
     color: #878787;
+    padding: 20px 0;
+
 }
 
 .copyright-text p a {
@@ -68,6 +61,10 @@ ul {
 .footer-menu li {
     display: inline-block;
     margin-left: 20px;
+}
+
+.footer-menu {
+    padding: 20px 0;
 }
 
 .footer-menu li:hover a {
