@@ -8,17 +8,9 @@ import Foot from './components/Footer.vue';
 </script>
 
 <template>
-  <Navc/>
-  <div class="MainContent">
-    <RouterView/>
-  </div>
-
-  <Foot/>
+  <Navc />
+  <RouterView />
+  <Foot />
 </template>
 
-<style>
-.MainContent{
-  min-height: 83vh;
-}
-</style>
 
