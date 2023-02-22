@@ -60,7 +60,7 @@ export default {
               PersonaInformation.ShortDescription }}
             </p>
             <div data-aos="fade-up" data-aos-delay="600">
-              <a href="#work" class="btn btn-brand me-3">Explore My Work</a>
+              <a href="#works" class="btn btn-brand me-3">Explore My Work</a>
               <a :href="PersonaInformation.ResumeLink" target="_blank" class="btn btn-brand me-3">View Resume</a>
 
             </div>
