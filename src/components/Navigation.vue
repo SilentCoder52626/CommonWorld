@@ -25,9 +25,6 @@
                         <a href="#about" class="nav-link">About</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#blogs" class="nav-link">Blog</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="#contact" class="nav-link">Contact</a>
                     </li>
 

@@ -1,0 +1,10 @@
+[
+    {
+        "Theme" : "Theme1",
+        "PersonalInformationApi" : "https://commonworld.free.beeceptor.com/PersonalInformation",
+        "ServiceInformationApi" : "https://commonworld.free.beeceptor.com/ServicesInformation",
+        "ProjectInformationApi" : "https://commonworld.free.beeceptor.com/Projects"
+
+        
+    }
+]

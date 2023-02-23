@@ -1,11 +1,14 @@
 <script>
+import Config from "/config.json"
+
 export default {
   data() {
     return {
+      ConfigData: Config,
       PersonaInformation: {
-        Name: "Kaman Khadka",
-        Designation: "Full-Stack Developer",
-        FullAddress: "Jhapa, Nepal",
+        Name: "Rajesh Dai",
+        Designation: "Khatra Actor",
+        FullAddress: "Pyaro Desh, Nepal",
         ShortDescription: "I'm a software engineer specialised in frontend and backend development for complex scalable web apps.",
         ResumeLink: "https://drive.google.com/file/d/1-n1BHFEjT60eFrklWdp0FVfsfdRx8aPV/view?usp=sharing"
       },
@@ -24,18 +27,51 @@ export default {
         Topic: "Web Designing",
         ShortDescription: "I craft high-performing and delightful experiences tailored and conversion-focused"
       },
-      ]
+      ],
+      ProjectsInfo: [{
+        Title : "First project",
+        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
+        ImageLink : "#",
+        ProjectLink: "#"
+      },
+      {
+        Title : "Second project",
+        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
+        ImageLink : "#",
+        ProjectLink: "#"
+      },{
+        Title : "Third project",
+        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
+        ImageLink : "#",
+        ProjectLink: "#"
+      },{
+        Title : "Last project",
+        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
+        ImageLink : "#",
+        ProjectLink: "#"
+      }],
+      EducationInfo:[{
+        Title : "Bachelor of Computer Application",
+        University : "Purwanchal University",
+        StartYear : "2017",
+        EndYear : "2021",
+        ShortDescription : "All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing elit"
+      }]
     }
   },
   mounted() {
     return Promise.all([
-      fetch('https://63f45b482213ed989c4109bb.mockapi.io/api/commonworld/PersonalInformation')
+      fetch(this.ConfigData[0].PersonalInformationApi)
         .then((res) => res.json())
         .then((data) => this.PersonaInformation = data[0])
         .catch(e => console.log(e.message)),
-      fetch('https://63f45b482213ed989c4109bb.mockapi.io/api/commonworld/ServicesInfo')
+      fetch(this.ConfigData[0].ServiceInformationApi)
         .then((res) => res.json())
         .then((data) => this.ServicesInfo = data)
+        .catch(e => console.log(e.message)),
+        fetch(this.ConfigData[0].ProjectInformationApi)
+        .then((res) => res.json())
+        .then((data) => this.ProjectsInfo = data)
         .catch(e => console.log(e.message)),
 
     ])
@@ -111,62 +147,16 @@ export default {
         </div>
 
         <div class="row gy-4">
-
-          <div class="col-md-6" data-aos="fade-up">
+          <div v-for="work in ProjectsInfo" class="col-md-12" data-aos="fade-up" data-aos-delay="200">
             <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-image rounded-4">
-                <img class="rounded-4" src="../assets/images/project-1.jpg" alt="">
-              </div>
               <div class="card-custom-content p-4">
-                <h4>Startup Landing Page</h4>
-                <p>Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could
-                  ever need to put together</p>
-                <a href="#" class="link-custom">Read More</a>
+                <h4>{{ work.Title }}</h4>
+                <p>{{ work.ShortDescription }}</p>
+                <a :href="work.ProjectLink" target="_blank" class="link-custom">Read More</a>
               </div>
             </div>
           </div>
 
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-image rounded-4">
-                <img class="rounded-4" src="../assets/images/project-2.png" alt="">
-              </div>
-              <div class="card-custom-content p-4">
-                <h4>Startup Landing Page</h4>
-                <p>Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could
-                  ever need to put together</p>
-                <a href="#" class="link-custom">Read More</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6" data-aos="fade-up">
-            <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-image rounded-4">
-                <img class="rounded-4" src="../assets/images/project-3.png" alt="">
-              </div>
-              <div class="card-custom-content p-4">
-                <h4>Startup Landing Page</h4>
-                <p>Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could
-                  ever need to put together</p>
-                <a href="#" class="link-custom">Read More</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-image rounded-4">
-                <img class="rounded-4" src="../assets/images/project-4.png" alt="">
-              </div>
-              <div class="card-custom-content p-4">
-                <h4>Startup Landing Page</h4>
-                <p>Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could
-                  ever need to put together</p>
-                <a href="#" class="link-custom">Read More</a>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -184,12 +174,11 @@ export default {
         </div>
 
         <div class="row gy-5">
-          <div class="col-lg-6">
 
-            <h3 class="mb-4" data-aos="fade-up" data-aos-delay="300">Education</h3>
+            <h3 class="col-md-6" data-aos="fade-up" data-aos-delay="300">Education</h3>
             <div class="row gy-4">
 
-              <div class="col-12" data-aos="fade-up" data-aos-delay="600">
+              <div class="col-6" data-aos="fade-up" data-aos-delay="600">
                 <div class="bg-base p-4 rounded-4 shadow-effect">
                   <h4>Master of Software Engineering</h4>
                   <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
@@ -198,7 +187,7 @@ export default {
                 </div>
               </div>
 
-              <div class="col-12" data-aos="fade-up" data-aos-delay="600">
+              <div class="col-6" data-aos="fade-up" data-aos-delay="600">
                 <div class="bg-base p-4 rounded-4 shadow-effect">
                   <h4>Master of Software Engineering</h4>
                   <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
@@ -207,7 +196,7 @@ export default {
                 </div>
               </div>
 
-              <div class="col-12" data-aos="fade-up" data-aos-delay="600">
+              <div class="col-6" data-aos="fade-up" data-aos-delay="600">
                 <div class="bg-base p-4 rounded-4 shadow-effect">
                   <h4>Master of Software Engineering</h4>
                   <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
@@ -218,14 +207,12 @@ export default {
 
             </div>
 
-          </div>
 
-          <div class="col-lg-6">
 
-            <h3 class="mb-4" data-aos="fade-up" data-aos-delay="300">Experiance</h3>
+            <h3 class="mb-4" data-aos="fade-up" data-aos-delay="300">Experience</h3>
             <div class="row gy-4">
 
-              <div class="col-12" data-aos="fade-up" data-aos-delay="600">
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
                 <div class="bg-base p-4 rounded-4 shadow-effect">
                   <h4>Applications developer</h4>
                   <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
@@ -234,7 +221,7 @@ export default {
                 </div>
               </div>
 
-              <div class="col-12" data-aos="fade-up" data-aos-delay="600">
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
                 <div class="bg-base p-4 rounded-4 shadow-effect">
                   <h4>Applications developer</h4>
                   <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
@@ -243,7 +230,7 @@ export default {
                 </div>
               </div>
 
-              <div class="col-12" data-aos="fade-up" data-aos-delay="600">
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
                 <div class="bg-base p-4 rounded-4 shadow-effect">
                   <h4>Applications developer</h4>
                   <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
@@ -254,7 +241,6 @@ export default {
 
             </div>
 
-          </div>
 
         </div>
 
@@ -262,63 +248,6 @@ export default {
     </section>
     <!-- //ABOUT -->
 
-    <!-- BLOG -->
-    <section id="blogs" class="full-height px-lg-5">
-      <div class="container">
-
-        <div class="row pb-4" data-aos="fade-up">
-          <div class="col-lg-8">
-            <h6 class="text-brand">BLOG</h6>
-            <h1>My Blog Posts</h1>
-          </div>
-        </div>
-
-        <div class="row gy-4">
-
-          <div class="col-md-4" data-aos="fade-up">
-            <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-image rounded-4">
-                <img class="rounded-4" src="../assets/images/blog-post-1.jpg" alt="">
-              </div>
-              <div class="card-custom-content p-4">
-                <p class="text-brand mb-2">20 Dec, 2022</p>
-                <h5 class="mb-4">Design a creative landing page using Bootstrap 5</h5>
-                <a href="#" class="link-custom">Read More</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-image rounded-4">
-                <img class="rounded-4" src="../assets/images/blog-post-2.jpg" alt="">
-              </div>
-              <div class="card-custom-content p-4">
-                <p class="text-brand mb-2">20 Dec, 2022</p>
-                <h5 class="mb-4">Design a creative landing page using Bootstrap 5</h5>
-                <a href="#" class="link-custom">Read More</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
-            <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-image rounded-4">
-                <img class="rounded-4" src="../assets/images/blog-post-3.jpg" alt="">
-              </div>
-              <div class="card-custom-content p-4">
-                <p class="text-brand mb-2">20 Dec, 2022</p>
-                <h5 class="mb-4">Design a creative landing page using Bootstrap 5</h5>
-                <a href="#" class="link-custom">Read More</a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-    <!-- //BLOG -->
 
     <!-- CONTACT -->
     <section id="contact" class="full-height px-lg-5">
@@ -368,7 +297,8 @@ export default {
             <div class="social-icons">
               <a href="https://twitter.com/common_khadka" target="_blank"><i class="lab la-twitter"></i></a>
               <a href="https://www.instagram.com/common_khadka/" target="_blank"><i class="lab la-instagram"></i></a>
-              <a href="https://www.youtube.com/channel/UCCLWyl10FvvwPsH6xvuvTLQ" target="_blank"><i class="lab la-youtube"></i></a>
+              <a href="https://www.youtube.com/channel/UCCLWyl10FvvwPsH6xvuvTLQ" target="_blank"><i
+                  class="lab la-youtube"></i></a>
               <a href="https://github.com/SilentCoder52626" target="_blank"><i class="lab la-github"></i></a>
             </div>
           </div>
