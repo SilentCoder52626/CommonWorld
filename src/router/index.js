@@ -1,5 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+var Themes = ["Theme1","Theme2"];
+
+import Config from "/config.json"
+var SelectedTheme = Config[0].Theme;
+
+// dynamic Link for import vue
+
+if(Themes.includes(SelectedTheme)){
+
+}else{
+
+}
+import Current from '../views/HomeView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +19,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: Current
     },
     {
       path: '/quote',

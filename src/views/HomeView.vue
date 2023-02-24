@@ -28,35 +28,19 @@ export default {
         ShortDescription: "I craft high-performing and delightful experiences tailored and conversion-focused"
       },
       ],
-      ProjectsInfo: [{
-        Title : "First project",
-        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
-        ImageLink : "#",
-        ProjectLink: "#"
-      },
-      {
-        Title : "Second project",
-        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
-        ImageLink : "#",
-        ProjectLink: "#"
-      },{
-        Title : "Third project",
-        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
-        ImageLink : "#",
-        ProjectLink: "#"
-      },{
-        Title : "Last project",
-        ShortDescription : "Innovation that exceeds expectations. Astra is a true template equiqed with all the elements you could ever need to put together",
-        ImageLink : "#",
-        ProjectLink: "#"
-      }],
-      EducationInfo:[{
-        Title : "Bachelor of Computer Application",
-        University : "Purwanchal University",
-        StartYear : "2017",
-        EndYear : "2021",
-        ShortDescription : "All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing elit"
+      ProjectsInfo: null,
+      EducationInfo: [{
+        Title: "Bachelor of Computer Application",
+        University: "Purwanchal University",
+        StartYear: "2017",
+        EndYear: "2021",
+        ShortDescription: "All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing elit"
       }]
+    }
+  },
+  computed: {
+    GithubFetchLink() {
+      return "https://api.github.com/users/" + this.ConfigData[0].GithubUserName + "/repos";
     }
   },
   mounted() {
@@ -64,15 +48,23 @@ export default {
       fetch(this.ConfigData[0].PersonalInformationApi)
         .then((res) => res.json())
         .then((data) => this.PersonaInformation = data[0])
-        .catch(e => console.log(e.message)),
+        .catch((e) => console.log(e.message)),
       fetch(this.ConfigData[0].ServiceInformationApi)
         .then((res) => res.json())
         .then((data) => this.ServicesInfo = data)
-        .catch(e => console.log(e.message)),
-        fetch(this.ConfigData[0].ProjectInformationApi)
+        .catch((e) => console.log(e.message)),
+      fetch(this.GithubFetchLink)
         .then((res) => res.json())
-        .then((data) => this.ProjectsInfo = data)
-        .catch(e => console.log(e.message)),
+        .then((data) => {
+          function compare(a, b) {
+            if (a.stargazers_count < b.stargazers_count)
+              return -1;
+            if (a.stargazers_count > b.stargazers_count)
+              return 1;
+            return 0;
+          }
+          this.ProjectsInfo = data.sort(compare).reverse().slice(0, this.ConfigData[0].GithubProjectContToShow);
+        }).catch(e => console.log(e.message)),
 
     ])
 
@@ -80,6 +72,40 @@ export default {
 }
 </script>
 <template>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container flex-lg-column">
+      <a class="navbar-brand mx-lg-auto mb-lg-4" href="/">
+        <span class="h3 fw-bold d-block d-lg-none">Kaman Khadka</span>
+        <img src="../assets/images/person.jpg" class="d-none d-lg-block rounded-circle" alt="">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto flex-lg-column text-lg-center">
+
+          <li class="nav-item">
+            <a href="#home" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#services" class="nav-link">Services</a>
+          </li>
+          <li class="nav-item">
+            <a href="#works" class="nav-link">Work</a>
+          </li>
+          <li class="nav-item">
+            <a href="#about" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="#contact" class="nav-link">Contact</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- //NAVBAR -->
   <div id="content-wrapper">
 
     <!-- HOME -->
@@ -146,17 +172,26 @@ export default {
           </div>
         </div>
 
-        <div class="row gy-4">
+        <div class="row gy-4" v-if="ProjectsInfo">
           <div v-for="work in ProjectsInfo" class="col-md-12" data-aos="fade-up" data-aos-delay="200">
             <div class="card-custom rounded-4 bg-base shadow-effect">
               <div class="card-custom-content p-4">
-                <h4>{{ work.Title }}</h4>
-                <p>{{ work.ShortDescription }}</p>
-                <a :href="work.ProjectLink" target="_blank" class="link-custom">Read More</a>
+                <h4>{{ work.name }}</h4>
+                <p>{{ work.description }}</p>
+                <a :href="work.html_url" target="_blank" class="link-custom">Read More</a>
               </div>
             </div>
           </div>
 
+        </div>
+        <div class="row gy-4" v-else>
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-custom rounded-4 bg-base shadow-effect">
+              <div class="card-custom-content p-4">
+                <h4> Getting Projects ........</h4>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -175,71 +210,71 @@ export default {
 
         <div class="row gy-5">
 
-            <h3 class="col-md-6" data-aos="fade-up" data-aos-delay="300">Education</h3>
-            <div class="row gy-4">
+          <h3 class="col-md-6" data-aos="fade-up" data-aos-delay="300">Education</h3>
+          <div class="row gy-4">
 
-              <div class="col-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="bg-base p-4 rounded-4 shadow-effect">
-                  <h4>Master of Software Engineering</h4>
-                  <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
-                  <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                    elit</p>
-                </div>
+            <div class="col-6" data-aos="fade-up" data-aos-delay="600">
+              <div class="bg-base p-4 rounded-4 shadow-effect">
+                <h4>Master of Software Engineering</h4>
+                <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
+                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
+                  elit</p>
               </div>
-
-              <div class="col-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="bg-base p-4 rounded-4 shadow-effect">
-                  <h4>Master of Software Engineering</h4>
-                  <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
-                  <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                    elit</p>
-                </div>
-              </div>
-
-              <div class="col-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="bg-base p-4 rounded-4 shadow-effect">
-                  <h4>Master of Software Engineering</h4>
-                  <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
-                  <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                    elit</p>
-                </div>
-              </div>
-
             </div>
 
-
-
-            <h3 class="mb-4" data-aos="fade-up" data-aos-delay="300">Experience</h3>
-            <div class="row gy-4">
-
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="bg-base p-4 rounded-4 shadow-effect">
-                  <h4>Applications developer</h4>
-                  <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
-                  <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                    elit</p>
-                </div>
+            <div class="col-6" data-aos="fade-up" data-aos-delay="600">
+              <div class="bg-base p-4 rounded-4 shadow-effect">
+                <h4>Master of Software Engineering</h4>
+                <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
+                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
+                  elit</p>
               </div>
-
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="bg-base p-4 rounded-4 shadow-effect">
-                  <h4>Applications developer</h4>
-                  <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
-                  <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                    elit</p>
-                </div>
-              </div>
-
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="bg-base p-4 rounded-4 shadow-effect">
-                  <h4>Applications developer</h4>
-                  <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
-                  <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                    elit</p>
-                </div>
-              </div>
-
             </div>
+
+            <div class="col-6" data-aos="fade-up" data-aos-delay="600">
+              <div class="bg-base p-4 rounded-4 shadow-effect">
+                <h4>Master of Software Engineering</h4>
+                <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
+                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
+                  elit</p>
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <h3 class="mb-4" data-aos="fade-up" data-aos-delay="300">Experience</h3>
+          <div class="row gy-4">
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
+              <div class="bg-base p-4 rounded-4 shadow-effect">
+                <h4>Applications developer</h4>
+                <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
+                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
+                  elit</p>
+              </div>
+            </div>
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
+              <div class="bg-base p-4 rounded-4 shadow-effect">
+                <h4>Applications developer</h4>
+                <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
+                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
+                  elit</p>
+              </div>
+            </div>
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
+              <div class="bg-base p-4 rounded-4 shadow-effect">
+                <h4>Applications developer</h4>
+                <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
+                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
+                  elit</p>
+              </div>
+            </div>
+
+          </div>
 
 
         </div>

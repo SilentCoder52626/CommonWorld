@@ -1,9 +1,10 @@
 [
     {
         "Theme" : "Theme1",
-        "PersonalInformationApi" : "https://commonworld.free.beeceptor.com/PersonalInformation",
-        "ServiceInformationApi" : "https://commonworld.free.beeceptor.com/ServicesInformation",
-        "ProjectInformationApi" : "https://commonworld.free.beeceptor.com/Projects"
+        "PersonalInformationApi" : "https://63f45b482213ed989c4109bb.mockapi.io/api/commonworld/PersonaInformation",
+        "ServiceInformationApi" : "https://63f45b482213ed989c4109bb.mockapi.io/api/commonworld/ServicesInfo",
+        "GithubUserName" : "SilentCoder52626",
+        "GithubProjectContToShow" : 6
 
         
     }
