@@ -5,29 +5,8 @@ export default {
   data() {
     return {
       ConfigData: Config,
-      PersonaInformation: {
-        Name: "Rajesh Dai",
-        Designation: "Khatra Actor",
-        FullAddress: "Pyaro Desh, Nepal",
-        ShortDescription: "I'm a software engineer specialised in frontend and backend development for complex scalable web apps.",
-        ResumeLink: "https://drive.google.com/file/d/1-n1BHFEjT60eFrklWdp0FVfsfdRx8aPV/view?usp=sharing"
-      },
-      ServicesInfo: [{
-        la_icon: "las la-feather",
-        Topic: "UX Design",
-        ShortDescription: "I craft high-performing and delightful experiences tailored and conversion-focused"
-      },
-      {
-        la_icon: "las la-pencil-ruler",
-        Topic: "Branding",
-        ShortDescription: "I craft high-performing and delightful experiences tailored and conversion-focused"
-      },
-      {
-        la_icon: "las la-laptop-code",
-        Topic: "Web Designing",
-        ShortDescription: "I craft high-performing and delightful experiences tailored and conversion-focused"
-      },
-      ],
+      PersonaInformation: null,
+      ServicesInfo: null,
       ProjectsInfo: null,
       EducationInfo: [{
         Title: "Bachelor of Computer Application",
@@ -75,8 +54,16 @@ export default {
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container flex-lg-column">
       <a class="navbar-brand mx-lg-auto mb-lg-4" href="/">
-        <span class="h3 fw-bold d-block d-lg-none">Kaman Khadka</span>
-        <img src="../assets/images/person.jpg" class="d-none d-lg-block rounded-circle" alt="">
+        <span class="h3 fw-bold d-block d-lg-none" v-if="this.PersonaInformation">{{ this.PersonaInformation.Name
+        }}</span>
+        <span class="h3 fw-bold d-block d-lg-none" v-else>Common World</span>
+        <img :src="this.PersonaInformation.ImageLink" v-if="this.PersonaInformation"
+          class="d-none d-lg-block rounded-circle" alt="">
+        <div v-else class="d-none d-lg-block">
+          <div class="loader-div">
+            <span class="loader"></span>
+          </div>
+        </div>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,8 +99,9 @@ export default {
     <section id="home" class="full-height px-lg-5">
 
       <div class="container">
+
         <div class="row">
-          <div class="col-lg-10">
+          <div class="col-lg-10" v-if="this.PersonaInformation">
             <h1 class="display-4 fw-bold text-uppercase" data-aos="fade-up">I'M A <span class="text-brand ">{{
               PersonaInformation.Designation
             }}</span> From {{
@@ -126,9 +114,13 @@ export default {
               <a :href="PersonaInformation.ResumeLink" target="_blank" class="btn btn-brand me-3">View Resume</a>
 
             </div>
+          </div>
 
+          <div class="loader-div" v-else>
+            <span class="loader"></span>
           </div>
         </div>
+
       </div>
 
     </section>
@@ -144,7 +136,7 @@ export default {
           </div>
         </div>
 
-        <div class="row gy-4">
+        <div class="row gy-4" v-if="this.ServicesInfo">
           <div v-for="service in ServicesInfo" class="col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="service p-4 bg-base rounded-4 shadow-effect">
               <div class="iconbox rounded-4">
@@ -156,6 +148,12 @@ export default {
           </div>
 
         </div>
+        <div class="row gy-4" v-else>
+          <div class="loader-div">
+            <span class="loader"></span>
+          </div>
+        </div>
+
 
       </div>
     </section>
@@ -185,12 +183,8 @@ export default {
 
         </div>
         <div class="row gy-4" v-else>
-          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
-            <div class="card-custom rounded-4 bg-base shadow-effect">
-              <div class="card-custom-content p-4">
-                <h4> Getting Projects ........</h4>
-              </div>
-            </div>
+          <div class="loader-div">
+            <span class="loader"></span>
           </div>
         </div>
 
@@ -213,7 +207,7 @@ export default {
           <h3 class="col-md-6" data-aos="fade-up" data-aos-delay="300">Education</h3>
           <div class="row gy-4">
 
-            <div class="col-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>Master of Software Engineering</h4>
                 <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
@@ -222,7 +216,7 @@ export default {
               </div>
             </div>
 
-            <div class="col-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>Master of Software Engineering</h4>
                 <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
@@ -231,7 +225,7 @@ export default {
               </div>
             </div>
 
-            <div class="col-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>Master of Software Engineering</h4>
                 <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
