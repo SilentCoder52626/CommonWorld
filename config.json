@@ -1,11 +1,15 @@
-[
-    {
-        "Theme" : "Theme1",
-        "PersonalInformationApi" : "https://63f45b482213ed989c4109bb.mockapi.io/api/commonworld/PersonaInformation",
-        "ServiceInformationApi" : "https://63f45b482213ed989c4109bb.mockapi.io/api/commonworld/ServicesInfo",
-        "GithubUserName" : "SilentCoder52626",
-        "GithubProjectContToShow" : 6
-
-        
+{
+    "Theme": "Theme1",
+    "PersonalInformationApi": "https://demo4894086.mockable.io/PersonalInformation",
+    "ServiceInformationApi": "https://demo4894086.mockable.io/ServiceInformation",
+    "EducationInformationApi": "https://demo4894086.mockable.io/EducationInformation",
+    "ExperienceInformationApi": "https://demo4894086.mockable.io/ExperienceInformation",
+    "GithubUserName": "SilentCoder52626",
+    "GithubProjectContToShow": 6,
+    "EmailSetting": {
+        "Host" : "smtp.gmail.com",
+        "UserName" : "khadka.kaman.1999@gmail.com",
+        "Password" : "Silentkaman@123",
+        "To" : "khadka.kaman.1999@gmail.com"
     }
-]
+}

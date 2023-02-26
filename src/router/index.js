@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Config from "/config.json"
-var SelectedTheme = Config[0].Theme;
+var SelectedTheme = Config.Theme;
 
 // dynamic Link for import vue
 

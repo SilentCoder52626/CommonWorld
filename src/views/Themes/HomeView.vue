@@ -8,27 +8,40 @@ export default {
       PersonaInformation: null,
       ServicesInfo: null,
       ProjectsInfo: null,
-      EducationInfo: [{
-        Title: "Bachelor of Computer Application",
-        University: "Purwanchal University",
-        StartYear: "2017",
-        EndYear: "2021",
-        ShortDescription: "All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing elit"
-      }]
+      EducationInfo: null,
+      ExperienceInfo: null,
+      ContactData: {
+        Name: "",
+        Email: "",
+        Subject: "",
+        Message: ""
+      },
+      IsContactMeSend: false
     }
   },
   computed: {
     GithubFetchLink() {
-      return "https://api.github.com/users/" + this.ConfigData[0].GithubUserName + "/repos";
+      return "https://api.github.com/users/" + this.ConfigData.GithubUserName + "/repos";
+    }
+  },
+  methods: {
+    SendMessage() {
+
+      this.IsContactMeSend = true;
+      this.ContactData.Name = "";
+      this.ContactData.Subject = "";
+      this.ContactData.Message = "";
+      this.ContactData.Email = "";
+      console.log(this.ContactData);
     }
   },
   mounted() {
     return Promise.all([
-      fetch(this.ConfigData[0].PersonalInformationApi)
+      fetch(this.ConfigData.PersonalInformationApi)
         .then((res) => res.json())
-        .then((data) => this.PersonaInformation = data[0])
+        .then((data) => this.PersonaInformation = data)
         .catch((e) => console.log(e.message)),
-      fetch(this.ConfigData[0].ServiceInformationApi)
+      fetch(this.ConfigData.ServiceInformationApi)
         .then((res) => res.json())
         .then((data) => this.ServicesInfo = data)
         .catch((e) => console.log(e.message)),
@@ -42,8 +55,16 @@ export default {
               return 1;
             return 0;
           }
-          this.ProjectsInfo = data.sort(compare).reverse().slice(0, this.ConfigData[0].GithubProjectContToShow);
+          this.ProjectsInfo = data.sort(compare).reverse().slice(0, this.ConfigData.GithubProjectContToShow);
         }).catch(e => console.log(e.message)),
+      fetch(this.ConfigData.EducationInformationApi)
+        .then((res) => res.json())
+        .then((data) => this.EducationInfo = data)
+        .catch((e) => console.log(e.message)),
+      fetch(this.ConfigData.ExperienceInformationApi)
+        .then((res) => res.json())
+        .then((data) => this.ExperienceInfo = data)
+        .catch((e) => console.log(e.message)),
 
     ])
 
@@ -105,7 +126,7 @@ export default {
             <h1 class="display-4 fw-bold text-uppercase" data-aos="fade-up">I'M A <span class="text-brand ">{{
               PersonaInformation.Designation
             }}</span> From {{
-  PersonaInformation.FullAddress }}</h1>
+  PersonaInformation.Address }}</h1>
             <p class="lead mt-2 mb-4" data-aos="fade-up" data-aos-delay="300">I am {{ PersonaInformation.Name }}, And {{
               PersonaInformation.ShortDescription }}
             </p>
@@ -204,70 +225,43 @@ export default {
 
         <div class="row gy-5">
 
-          <h3 class="col-md-6" data-aos="fade-up" data-aos-delay="300">Education</h3>
-          <div class="row gy-4">
+          <h3 class="col-md-6" data-aos="fade-up" data-aos-delay="200">Education</h3>
+          <div class="row gy-4" v-if="this.EducationInfo">
 
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div v-for="edu in this.EducationInfo" class="col-md-6 col-6 col-sm-12" data-aos="fade-up"
+              data-aos-delay="400">
               <div class="bg-base p-4 rounded-4 shadow-effect">
-                <h4>Master of Software Engineering</h4>
-                <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
-                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                  elit</p>
+                <h4>{{ edu.Course }}</h4>
+                <p class="text-brand mb-2">{{ edu.University }} ({{ edu.StartYear }} - {{ edu.EndYear }})</p>
+                <p class="mb-0">{{ edu.ShortDescription }}</p>
               </div>
             </div>
 
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-              <div class="bg-base p-4 rounded-4 shadow-effect">
-                <h4>Master of Software Engineering</h4>
-                <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
-                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                  elit</p>
-              </div>
-            </div>
 
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-              <div class="bg-base p-4 rounded-4 shadow-effect">
-                <h4>Master of Software Engineering</h4>
-                <p class="text-brand mb-2">De Mars University Venston Bay (2015 - 2020)</p>
-                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                  elit</p>
-              </div>
+          </div>
+          <div class="row gy-4" v-else>
+            <div class="loader-div">
+              <span class="loader"></span>
             </div>
-
           </div>
 
 
+          <h3 class="mb-4" data-aos="fade-up" data-aos-delay="200">Experience</h3>
+          <div class="row gy-4" v-if="this.ExperienceInfo">
 
-          <h3 class="mb-4" data-aos="fade-up" data-aos-delay="300">Experience</h3>
-          <div class="row gy-4">
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div v-for="exp in this.ExperienceInfo" class="col-md-6 col-6 col-sm-12" data-aos="fade-up"
+              data-aos-delay="400">
               <div class="bg-base p-4 rounded-4 shadow-effect">
-                <h4>Applications developer</h4>
-                <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
-                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                  elit</p>
+                <h4>{{ exp.JobTitle }}</h4>
+                <p class="text-brand mb-2">{{ exp.CompanyName }} ({{ exp.StartYear }} - {{ exp.EndYear }})</p>
+                <p class="mb-0">{{ exp.ShortDescription }}</p>
               </div>
             </div>
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-              <div class="bg-base p-4 rounded-4 shadow-effect">
-                <h4>Applications developer</h4>
-                <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
-                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                  elit</p>
-              </div>
+          </div>
+          <div class="row gy-4" v-else>
+            <div class="loader-div">
+              <span class="loader"></span>
             </div>
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
-              <div class="bg-base p-4 rounded-4 shadow-effect">
-                <h4>Applications developer</h4>
-                <p class="text-brand mb-2">Twitter (2018 - 2020)</p>
-                <p class="mb-0">All we are more and design lorem ipsum dolor creativity sit amet consectetur adipisicing
-                  elit</p>
-              </div>
-            </div>
-
           </div>
 
 
@@ -290,22 +284,27 @@ export default {
           </div>
 
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="300">
-            <form action="#" class="row g-lg-3 gy-3">
+            <form @submit="this.SendMessage()" class="row g-lg-3 gy-3">
               <div class="form-group col-md-6">
-                <input type="text" class="form-control" placeholder="Enter your name">
+                <input type="text" v-model="this.ContactData.Name" class="form-control" placeholder="Enter your name" autocomplete="off">
               </div>
               <div class="form-group col-md-6">
-                <input type="email" class="form-control" placeholder="Enter your email">
+                <input type="email" v-model="this.ContactData.Email" class="form-control" placeholder="Enter your email" autocomplete="off">
               </div>
               <div class="form-group col-12">
-                <input type="text" class="form-control" placeholder="Enter subject">
+                <input type="text" v-model="this.ContactData.Subject" class="form-control" placeholder="Enter subject" autocomplete="off">
               </div>
               <div class="form-group col-12">
-                <textarea name="" rows="4" class="form-control" placeholder="Enter your message"></textarea>
+                <textarea rows="4" v-model="this.ContactData.Message" class="form-control"
+                  placeholder="Enter your message"></textarea>
               </div>
               <div class="form-group col-12 d-grid">
-                <button type="submit" class="btn btn-brand">Contact me</button>
+                <button v-if="this.IsContactMeSend" type="submit" class="btn btn-brand" disabled="disabled">Message sent
+                  succesfully.</button>
+                <button v-else type="submit" class="btn btn-brand">Contact me</button>
+
               </div>
+
             </form>
           </div>
         </div>
@@ -336,5 +335,4 @@ export default {
     </footer>
     <!-- //FOOTER -->
 
-  </div>
-<!-- //CONTENT WRAPPER --></template>
+</div><!-- //CONTENT WRAPPER --></template>
