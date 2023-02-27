@@ -7,9 +7,8 @@
     "GithubUserName": "SilentCoder52626",
     "GithubProjectContToShow": 6,
     "EmailSetting": {
-        "Host" : "smtp.gmail.com",
-        "UserName" : "khadka.kaman.1999@gmail.com",
-        "Password" : "Silentkaman@123",
-        "To" : "khadka.kaman.1999@gmail.com"
+        "EmailServiceId" : "service_bz018dm",
+        "EmailTemplateId" : "template_o85n41i",
+        "EmailUserId" : "jvgiWNgyh9AuTORof"
     }
 }

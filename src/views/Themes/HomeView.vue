@@ -1,6 +1,8 @@
 <script>
 import Config from "/config.json"
 
+import emailjs from 'emailjs-com';
+
 export default {
   data() {
     return {
@@ -25,17 +27,26 @@ export default {
     }
   },
   methods: {
-    SendMessage() {
-
+    SendMessage(e) {
+      try {
+        emailjs.send(this.ConfigData.EmailSetting.EmailServiceId, this.ConfigData.EmailSetting.EmailTemplateId, {
+          from_name: this.ContactData.Name,
+          message: this.ContactData.Message,
+          from_email: this.ContactData.Email,
+          subject: this.ContactData.Subject,
+        },this.ConfigData.EmailSetting.EmailUserId);
+      } catch (error) {
+        console.log({ error })
+      }
       this.IsContactMeSend = true;
       this.ContactData.Name = "";
       this.ContactData.Subject = "";
       this.ContactData.Message = "";
       this.ContactData.Email = "";
-      console.log(this.ContactData);
     }
   },
   mounted() {
+
     return Promise.all([
       fetch(this.ConfigData.PersonalInformationApi)
         .then((res) => res.json())
@@ -284,15 +295,18 @@ export default {
           </div>
 
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="300">
-            <form @submit="this.SendMessage()" class="row g-lg-3 gy-3">
+            <form @submit.prevent="this.SendMessage()" class="row g-lg-3 gy-3">
               <div class="form-group col-md-6">
-                <input type="text" v-model="this.ContactData.Name" class="form-control" placeholder="Enter your name" autocomplete="off">
+                <input type="text" v-model="this.ContactData.Name" class="form-control" placeholder="Enter your name"
+                  autocomplete="off">
               </div>
               <div class="form-group col-md-6">
-                <input type="email" v-model="this.ContactData.Email" class="form-control" placeholder="Enter your email" autocomplete="off">
+                <input type="email" v-model="this.ContactData.Email" class="form-control" placeholder="Enter your email"
+                  autocomplete="off">
               </div>
               <div class="form-group col-12">
-                <input type="text" v-model="this.ContactData.Subject" class="form-control" placeholder="Enter subject" autocomplete="off">
+                <input type="text" v-model="this.ContactData.Subject" class="form-control" placeholder="Enter subject"
+                  autocomplete="off">
               </div>
               <div class="form-group col-12">
                 <textarea rows="4" v-model="this.ContactData.Message" class="form-control"
@@ -335,4 +349,5 @@ export default {
     </footer>
     <!-- //FOOTER -->
 
-</div><!-- //CONTENT WRAPPER --></template>
+  </div>
+<!-- //CONTENT WRAPPER --></template>
