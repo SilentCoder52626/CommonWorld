@@ -23,16 +23,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import(`../views/Themes/${Current}.vue`)
-    },
-    {
-      path: '/quote',
-      name: 'quote',
-      component: () => import('../components/Quote.vue')
-    },
-    {
-      path: '/word-counter',
-      name: 'word-counter',
-      component: () => import('../components/WordCounter.vue')
     }
   ]
 })

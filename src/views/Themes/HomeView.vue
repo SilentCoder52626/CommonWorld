@@ -1,7 +1,6 @@
 <script>
 import Config from "/config.json"
 
-import emailjs from 'emailjs-com';
 
 export default {
   data() {
@@ -18,32 +17,26 @@ export default {
         Subject: "",
         Message: ""
       },
-      IsContactMeSend: false
+      IsReadMoreClicked: false
     }
   },
   computed: {
     GithubFetchLink() {
       return "https://api.github.com/users/" + this.ConfigData.GithubUserName + "/repos";
+    },
+    FormSubmitLink() {
+      return "https://formsubmit.co/" + this.ConfigData.ContactMeEmail;
+    },
+    ThankYouUrl() {
+      return window.location.origin;
     }
   },
   methods: {
-    SendMessage(e) {
-      try {
-        emailjs.send(this.ConfigData.EmailSetting.EmailServiceId, this.ConfigData.EmailSetting.EmailTemplateId, {
-          from_name: this.ContactData.Name,
-          message: this.ContactData.Message,
-          from_email: this.ContactData.Email,
-          subject: this.ContactData.Subject,
-        },this.ConfigData.EmailSetting.EmailUserId);
-      } catch (error) {
-        console.log({ error })
-      }
-      this.IsContactMeSend = true;
-      this.ContactData.Name = "";
-      this.ContactData.Subject = "";
-      this.ContactData.Message = "";
-      this.ContactData.Email = "";
-    }
+    TooggleReadMore() {
+      if (this.IsReadMoreClicked)
+        return this.IsReadMoreClicked = false;
+      return this.IsReadMoreClicked = true;
+    },
   },
   mounted() {
 
@@ -175,7 +168,12 @@ export default {
                 <i :class="service.la_icon"></i>
               </div>
               <h5 class="mt-4 mb-2">{{ service.Topic }}</h5>
-              <p>{{ service.ShortDescription }}</p>
+
+              <p v-if="service.ShortDescription.length < 150">{{ service.ShortDescription }}</p>
+              <p v-else-if="this.IsReadMoreClicked">{{ service.ShortDescription }} <b @click="TooggleReadMore()"
+                  class="link-custom"> &nbsp; &nbsp; Show Less.</b></p>
+              <p v-else>{{ service.ShortDescription.substring(0, 150) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
+                  class="link-custom">Show More.</b></p>
             </div>
           </div>
 
@@ -239,12 +237,16 @@ export default {
           <h3 class="col-md-6" data-aos="fade-up" data-aos-delay="200">Education</h3>
           <div class="row gy-4" v-if="this.EducationInfo">
 
-            <div v-for="edu in this.EducationInfo" class="col-md-6 col-6 col-sm-12" data-aos="fade-up"
+            <div v-for="edu in this.EducationInfo" class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-up"
               data-aos-delay="400">
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>{{ edu.Course }}</h4>
                 <p class="text-brand mb-2">{{ edu.University }} ({{ edu.StartYear }} - {{ edu.EndYear }})</p>
-                <p class="mb-0">{{ edu.ShortDescription }}</p>
+                <p v-if="edu.ShortDescription.length < 150" class="mb-0">{{ edu.ShortDescription }}</p>
+              <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ edu.ShortDescription }} <b @click="TooggleReadMore()"
+                  class="link-custom"> &nbsp;Show Less.</b></p>
+              <p v-else class="mb-0">{{ edu.ShortDescription.substring(0, 150) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
+                  class="link-custom">Show More.</b></p>
               </div>
             </div>
 
@@ -260,12 +262,16 @@ export default {
           <h3 class="mb-4" data-aos="fade-up" data-aos-delay="200">Experience</h3>
           <div class="row gy-4" v-if="this.ExperienceInfo">
 
-            <div v-for="exp in this.ExperienceInfo" class="col-md-6 col-6 col-sm-12" data-aos="fade-up"
+            <div v-for="exp in this.ExperienceInfo" class="col-md-6 col-lg-6 col-sm-12" data-aos="fade-up"
               data-aos-delay="400">
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>{{ exp.JobTitle }}</h4>
                 <p class="text-brand mb-2">{{ exp.CompanyName }} ({{ exp.StartYear }} - {{ exp.EndYear }})</p>
-                <p class="mb-0">{{ exp.ShortDescription }}</p>
+                <p v-if="exp.ShortDescription.length < 150" class="mb-0">{{ exp.ShortDescription }}</p>
+              <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ exp.ShortDescription }} <b @click="TooggleReadMore()"
+                  class="link-custom"> &nbsp;Show Less.</b></p>
+              <p v-else class="mb-0">{{ exp.ShortDescription.substring(0, 150) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
+                  class="link-custom">Show More.</b></p>
               </div>
             </div>
           </div>
@@ -295,27 +301,28 @@ export default {
           </div>
 
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="300">
-            <form @submit.prevent="this.SendMessage()" class="row g-lg-3 gy-3">
+            <form :action="this.FormSubmitLink" method="POST" class="row g-lg-3 gy-3">
+              <input type="hidden" name="_next" :value="this.ThankYouUrl">
+              <input type="hidden" name="_captcha" value="false">
               <div class="form-group col-md-6">
-                <input type="text" v-model="this.ContactData.Name" class="form-control" placeholder="Enter your name"
-                  autocomplete="off">
+                <input type="text" name="name" class="form-control" placeholder="Enter your name" autocomplete="off"
+                  required>
               </div>
               <div class="form-group col-md-6">
-                <input type="email" v-model="this.ContactData.Email" class="form-control" placeholder="Enter your email"
-                  autocomplete="off">
+                <input type="email" name="email" class="form-control" placeholder="Enter your email" autocomplete="off"
+                  required>
               </div>
               <div class="form-group col-12">
-                <input type="text" v-model="this.ContactData.Subject" class="form-control" placeholder="Enter subject"
-                  autocomplete="off">
+                <input type="text" name="subject" class="form-control" placeholder="Enter subject" autocomplete="off"
+                  required>
               </div>
               <div class="form-group col-12">
-                <textarea rows="4" v-model="this.ContactData.Message" class="form-control"
-                  placeholder="Enter your message"></textarea>
+                <textarea rows="4" name="message" class="form-control" placeholder="Enter your message"
+                  required></textarea>
               </div>
               <div class="form-group col-12 d-grid">
-                <button v-if="this.IsContactMeSend" type="submit" class="btn btn-brand" disabled="disabled">Message sent
-                  succesfully.</button>
-                <button v-else type="submit" class="btn btn-brand">Contact me</button>
+
+                <button type="submit" class="btn btn-brand">Contact me</button>
 
               </div>
 
@@ -337,11 +344,13 @@ export default {
           </div>
           <div class="col-auto">
             <div class="social-icons">
-              <a href="https://twitter.com/common_khadka" target="_blank"><i class="lab la-twitter"></i></a>
-              <a href="https://www.instagram.com/common_khadka/" target="_blank"><i class="lab la-instagram"></i></a>
-              <a href="https://www.youtube.com/channel/UCCLWyl10FvvwPsH6xvuvTLQ" target="_blank"><i
+              <a :href="this.ConfigData.TwitterLink" target="_blank"><i class="lab la-twitter"></i></a>
+              <a :href="this.ConfigData.InstagramLink" target="_blank"><i class="lab la-instagram"></i></a>
+              <a :href="this.ConfigData.YoutubeLink" target="_blank"><i
                   class="lab la-youtube"></i></a>
-              <a href="https://github.com/SilentCoder52626" target="_blank"><i class="lab la-github"></i></a>
+              <a :href="this.ConfigData.GithubLink" target="_blank"><i class="lab la-github"></i></a>
+              <a :href="this.ConfigData.LinkedInLink" target="_blank"><i class="lab la-linkedin"></i></a>
+
             </div>
           </div>
         </div>

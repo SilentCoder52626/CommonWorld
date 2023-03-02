@@ -5,10 +5,11 @@
     "EducationInformationApi": "https://demo4894086.mockable.io/EducationInformation",
     "ExperienceInformationApi": "https://demo4894086.mockable.io/ExperienceInformation",
     "GithubUserName": "SilentCoder52626",
+    "GithubLink" : "https://github.com/SilentCoder52626",
+    "InstagramLink" : "https://www.instagram.com/common_khadka/",
+    "TwitterLink" : "https://twitter.com/common_khadka",
+    "YoutubeLink" : "https://www.youtube.com/channel/UCCLWyl10FvvwPsH6xvuvTLQ",
+    "LinkedInLink" : "https://www.linkedin.com/in/kaman-khadka-474340140/",
     "GithubProjectContToShow": 6,
-    "EmailSetting": {
-        "EmailServiceId" : "service_bz018dm",
-        "EmailTemplateId" : "template_o85n41i",
-        "EmailUserId" : "jvgiWNgyh9AuTORof"
-    }
+    "ContactMeEmail" : "7d6ef9fce6e5b03355cab4953a5e2a0e"
 }
