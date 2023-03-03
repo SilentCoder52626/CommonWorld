@@ -158,6 +158,10 @@ img {
 }
 
 /* CARD */
+.blog-card{
+    width: 100%;
+    height: 450px !important;
+}
 .card-custom .card-custom-image {
     overflow: hidden;
 }

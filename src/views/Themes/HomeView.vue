@@ -11,6 +11,7 @@ export default {
       ProjectsInfo: null,
       EducationInfo: null,
       ExperienceInfo: null,
+      BlogData: null,
       ContactData: {
         Name: "",
         Email: "",
@@ -23,6 +24,9 @@ export default {
   computed: {
     GithubFetchLink() {
       return "https://api.github.com/users/" + this.ConfigData.GithubUserName + "/repos";
+    },
+    DevToFetchLink() {
+      return "https://dev.to/api/articles?username=" + this.ConfigData.DevToUserName;
     },
     FormSubmitLink() {
       return "https://formsubmit.co/" + this.ConfigData.ContactMeEmail;
@@ -69,7 +73,18 @@ export default {
         .then((res) => res.json())
         .then((data) => this.ExperienceInfo = data)
         .catch((e) => console.log(e.message)),
-
+      fetch(this.DevToFetchLink)
+        .then((res) => res.json())
+        .then((data) => {
+          function compare(a, b) {
+            if (a.public_reactions_count < b.public_reactions_count)
+              return -1;
+            if (a.public_reactions_count > b.public_reactions_count)
+              return 1;
+            return 0;
+          }
+          this.BlogData = data.sort(compare).reverse().slice(0, 6);
+        }).catch(e => console.log(e.message)),
     ])
 
   },
@@ -108,6 +123,9 @@ export default {
           </li>
           <li class="nav-item">
             <a href="#about" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="#blogs" class="nav-link">Blog</a>
           </li>
           <li class="nav-item">
             <a href="#contact" class="nav-link">Contact</a>
@@ -169,10 +187,10 @@ export default {
               </div>
               <h5 class="mt-4 mb-2">{{ service.Topic }}</h5>
 
-              <p v-if="service.ShortDescription.length < 150">{{ service.ShortDescription }}</p>
+              <p v-if="service.ShortDescription.length < 250">{{ service.ShortDescription }}</p>
               <p v-else-if="this.IsReadMoreClicked">{{ service.ShortDescription }} <b @click="TooggleReadMore()"
                   class="link-custom"> &nbsp; &nbsp; Show Less.</b></p>
-              <p v-else>{{ service.ShortDescription.substring(0, 150) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
+              <p v-else>{{ service.ShortDescription.substring(0, 250) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
                   class="link-custom">Show More.</b></p>
             </div>
           </div>
@@ -242,11 +260,11 @@ export default {
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>{{ edu.Course }}</h4>
                 <p class="text-brand mb-2">{{ edu.University }} ({{ edu.StartYear }} - {{ edu.EndYear }})</p>
-                <p v-if="edu.ShortDescription.length < 150" class="mb-0">{{ edu.ShortDescription }}</p>
-              <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ edu.ShortDescription }} <b @click="TooggleReadMore()"
-                  class="link-custom"> &nbsp;Show Less.</b></p>
-              <p v-else class="mb-0">{{ edu.ShortDescription.substring(0, 150) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
-                  class="link-custom">Show More.</b></p>
+                <p v-if="edu.ShortDescription.length < 250" class="mb-0">{{ edu.ShortDescription }}</p>
+                <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ edu.ShortDescription }} <b
+                    @click="TooggleReadMore()" class="link-custom"> &nbsp;Show Less.</b></p>
+                <p v-else class="mb-0">{{ edu.ShortDescription.substring(0, 250) }}...&nbsp;&nbsp;<b
+                    @click="TooggleReadMore()" class="link-custom">Show More.</b></p>
               </div>
             </div>
 
@@ -267,11 +285,11 @@ export default {
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>{{ exp.JobTitle }}</h4>
                 <p class="text-brand mb-2">{{ exp.CompanyName }} ({{ exp.StartYear }} - {{ exp.EndYear }})</p>
-                <p v-if="exp.ShortDescription.length < 150" class="mb-0">{{ exp.ShortDescription }}</p>
-              <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ exp.ShortDescription }} <b @click="TooggleReadMore()"
-                  class="link-custom"> &nbsp;Show Less.</b></p>
-              <p v-else class="mb-0">{{ exp.ShortDescription.substring(0, 150) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
-                  class="link-custom">Show More.</b></p>
+                <p v-if="exp.ShortDescription.length < 250" class="mb-0">{{ exp.ShortDescription }}</p>
+                <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ exp.ShortDescription }} <b
+                    @click="TooggleReadMore()" class="link-custom"> &nbsp;Show Less.</b></p>
+                <p v-else class="mb-0">{{ exp.ShortDescription.substring(0, 250) }}...&nbsp;&nbsp;<b
+                    @click="TooggleReadMore()" class="link-custom">Show More.</b></p>
               </div>
             </div>
           </div>
@@ -288,6 +306,42 @@ export default {
     </section>
     <!-- //ABOUT -->
 
+    <!-- BLOG -->
+    <section id="blogs" class="full-height px-lg-5">
+      <div class="container">
+
+        <div class="row pb-4" data-aos="fade-up">
+          <div class="col-lg-8">
+            <h6 class="text-brand">BLOG</h6>
+            <h1>My Blog Posts</h1>
+          </div>
+        </div>
+
+        <div class="row gy-4" v-if="this.BlogData">
+
+          <div v-for="blog in this.BlogData" class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-custom blog-card rounded-4 bg-base shadow-effect">
+              <div class="card-custom-image rounded-4">
+                <img class="rounded-4" :src="blog.cover_image" alt="">
+              </div>
+              <div class="card-custom-content p-4">
+                <h3 class="mb-1">{{ blog.title }}</h3>
+                <p class="text-brand mb-2">{{ blog.readable_publish_date }}</p>
+                <p class="mb-3">{{ blog.description }} &nbsp;<a :href="blog.url" target="_blank" class="link-custom">Read More</a></p>
+                
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row gy-4" v-else>
+          <div class="loader-div">
+            <span class="loader"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- //BLOG -->
 
     <!-- CONTACT -->
     <section id="contact" class="full-height px-lg-5">
@@ -346,8 +400,7 @@ export default {
             <div class="social-icons">
               <a :href="this.ConfigData.TwitterLink" target="_blank"><i class="lab la-twitter"></i></a>
               <a :href="this.ConfigData.InstagramLink" target="_blank"><i class="lab la-instagram"></i></a>
-              <a :href="this.ConfigData.YoutubeLink" target="_blank"><i
-                  class="lab la-youtube"></i></a>
+              <a :href="this.ConfigData.YoutubeLink" target="_blank"><i class="lab la-youtube"></i></a>
               <a :href="this.ConfigData.GithubLink" target="_blank"><i class="lab la-github"></i></a>
               <a :href="this.ConfigData.LinkedInLink" target="_blank"><i class="lab la-linkedin"></i></a>
 
