@@ -1,7 +1,7 @@
 <script>
 import Config from "/config.json"
-
-
+import ShortDescriptionView from "../../components/description.vue"
+import "../../assets/css/style.css"
 export default {
   data() {
     return {
@@ -28,6 +28,9 @@ export default {
     DevToFetchLink() {
       return "https://dev.to/api/articles?username=" + this.ConfigData.DevToUserName;
     },
+    DevToProfileLink() {
+      return "https://dev.to/" + this.ConfigData.DevToUserName;
+    },
     FormSubmitLink() {
       return "https://formsubmit.co/" + this.ConfigData.ContactMeEmail;
     },
@@ -41,6 +44,9 @@ export default {
         return this.IsReadMoreClicked = false;
       return this.IsReadMoreClicked = true;
     },
+  },
+  components:{
+    ShortDescriptionView
   },
   mounted() {
 
@@ -124,7 +130,7 @@ export default {
           <li class="nav-item">
             <a href="#about" class="nav-link">About</a>
           </li>
-          <li class="nav-item">
+          <li v-if="this.ConfigData.DevToUserName" class="nav-item">
             <a href="#blogs" class="nav-link">Blog</a>
           </li>
           <li class="nav-item">
@@ -186,12 +192,8 @@ export default {
                 <i :class="service.la_icon"></i>
               </div>
               <h5 class="mt-4 mb-2">{{ service.Topic }}</h5>
-
-              <p v-if="service.ShortDescription.length < 250">{{ service.ShortDescription }}</p>
-              <p v-else-if="this.IsReadMoreClicked">{{ service.ShortDescription }} <b @click="TooggleReadMore()"
-                  class="link-custom"> &nbsp; &nbsp; Show Less.</b></p>
-              <p v-else>{{ service.ShortDescription.substring(0, 250) }}...&nbsp;&nbsp;<b @click="TooggleReadMore()"
-                  class="link-custom">Show More.</b></p>
+              <ShortDescriptionView :ShortDescription="service.ShortDescription"/>
+             
             </div>
           </div>
 
@@ -260,11 +262,8 @@ export default {
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>{{ edu.Course }}</h4>
                 <p class="text-brand mb-2">{{ edu.University }} ({{ edu.StartYear }} - {{ edu.EndYear }})</p>
-                <p v-if="edu.ShortDescription.length < 250" class="mb-0">{{ edu.ShortDescription }}</p>
-                <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ edu.ShortDescription }} <b
-                    @click="TooggleReadMore()" class="link-custom"> &nbsp;Show Less.</b></p>
-                <p v-else class="mb-0">{{ edu.ShortDescription.substring(0, 250) }}...&nbsp;&nbsp;<b
-                    @click="TooggleReadMore()" class="link-custom">Show More.</b></p>
+                <ShortDescriptionView :ShortDescription="edu.ShortDescription"/>
+
               </div>
             </div>
 
@@ -285,11 +284,8 @@ export default {
               <div class="bg-base p-4 rounded-4 shadow-effect">
                 <h4>{{ exp.JobTitle }}</h4>
                 <p class="text-brand mb-2">{{ exp.CompanyName }} ({{ exp.StartYear }} - {{ exp.EndYear }})</p>
-                <p v-if="exp.ShortDescription.length < 250" class="mb-0">{{ exp.ShortDescription }}</p>
-                <p v-else-if="this.IsReadMoreClicked" class="mb-0">{{ exp.ShortDescription }} <b
-                    @click="TooggleReadMore()" class="link-custom"> &nbsp;Show Less.</b></p>
-                <p v-else class="mb-0">{{ exp.ShortDescription.substring(0, 250) }}...&nbsp;&nbsp;<b
-                    @click="TooggleReadMore()" class="link-custom">Show More.</b></p>
+                <ShortDescriptionView :ShortDescription="exp.ShortDescription"/>
+
               </div>
             </div>
           </div>
@@ -307,12 +303,12 @@ export default {
     <!-- //ABOUT -->
 
     <!-- BLOG -->
-    <section id="blogs" class="full-height px-lg-5">
+    <section id="blogs" v-if="this.ConfigData.DevToUserName" class="full-height px-lg-5">
       <div class="container">
 
         <div class="row pb-4" data-aos="fade-up">
           <div class="col-lg-8">
-            <h6 class="text-brand">BLOG</h6>
+            <h6 class="text-brand"> <a class="no-link"  :href="this.DevToProfileLink" target="_blank">BLOG</a></h6>
             <h1>My Blog Posts</h1>
           </div>
         </div>
