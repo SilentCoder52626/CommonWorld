@@ -224,7 +224,17 @@ export default {
           <div v-for="work in ProjectsInfo" class="col-md-12" data-aos="fade-up" data-aos-delay="200">
             <div class="card-custom rounded-4 bg-base shadow-effect">
               <div class="card-custom-content p-4">
-                <h4>{{ work.name }}</h4>
+                <div class="row pull-right">
+                  <div class="col-md-11">
+                    <h4>{{ work.name }} </h4>
+                  </div>
+                  <div class="col-md-1">
+                    <h5 class="pull-right"><a class="la la-star"></a>&nbsp;{{work.stargazers_count}}</h5>
+
+                  </div>
+                  
+                </div>
+                
                 <p>{{ work.description }}</p>
                 <a :href="work.html_url" target="_blank" class="link-custom">Read More</a>
               </div>
