@@ -103,7 +103,7 @@ export default {
         <span class="h3 fw-bold d-block d-lg-none" v-if="this.PersonaInformation">{{ this.PersonaInformation.Name
         }}</span>
         <span class="h3 fw-bold d-block d-lg-none" v-else>Common World</span>
-        <img :src="this.PersonaInformation.ImageLink" v-if="this.PersonaInformation"
+        <img :src="this.PersonaInformation.ImageLink" style="height: 180px;width: 180px;" v-if="this.PersonaInformation"
           class="d-none d-lg-block rounded-circle" alt="">
         <div v-else class="d-none d-lg-block">
           <div class="loader-div">
